@@ -57,7 +57,6 @@ class: center, middle, inverse, title-slide
   font-size: 40% !important;
 }
 &lt;/style&gt;
-
 ---
 
 class: chapter-slide
@@ -67,9 +66,10 @@ class: chapter-slide
 ---
 # Ley de garantías explícitas de salud (GES)
 
-- En Chile, en el 2006, se hizo una importante reforma de salud, en donde se creó la Ley GES, que establece plazos máximos para atenciones de ciertas patologías. Actualmente son 85 grupos de patologías.
+- En Chile, la Ley GES que establece plazos máximos para atenciones de ciertas patologías. Actualmente son 85 grupos de patologías.
 - Un hospital mediano, puede llegar a administrar cerca de 3000 a 4000 casos diarios. Es decir, personas que están a la espera de atenciones, exámenes, cirugias o tratamientos. 
-- Debido al gran volumen de datos, diversidad de especialidades, tipos de atenciones y ser una exigencia legal, se hace necesario que las instituciones mantengan sistemas de información adecuados, realicen minería de datos y cuenten con modelos de gestión que faciliten el cumplimiento de los plazos de atención. 
+- Debido al gran volumen de datos, diversidad de especialidades, tipos de atenciones y al ser una exigencia legal, se hace necesario que las instituciones mantengan sistemas de información adecuados, análisis de datos y cuenten con modelos de gestión que faciliten el cumplimiento de los plazos de atención. 
+- Además, que la generación de reportes es una tarea muy frecuente para las áreas a cargo del monitoreo GES.
 
 ---
 
@@ -79,15 +79,15 @@ A nivel central y de alcance nacional, existe una plataforma de registro de los 
 El uso de esta plataforma es obligatorio para el sector público de salud.
 Pero esta plataforma no ofrece muchas funcionalidades para el análisis de datos. 
 
-En general, se pueden descargar diversos registros en Excel, pero que es necesario de manipular, ajustar y realizar una serie de tranasformaciones para que sean útiles. Además, que estas labores de limpieza deben realizarse cada vez que necesite generar un reporte,lo cual puede ocurrir varias veces al día.
+En general, se pueden descargar diversos registros en Excel, pero que son necesario de manipular, ajustar y realizar una serie de transformaciones para que sean útiles. Además, que estas labores de limpieza deben realizarse cada vez que necesite generar un reporte,lo cual puede ocurrir varias veces al día.
 
 ---
 
 # Reporte automatizado 1/2
 
 - Para facilitar las tareas de limpieza y transformación, es que generamos un reporte que lo hiciera de forma automática.
-- Además, el reporte incluye una serie de análisis y visualizaciones que facilitan el análisis exploratorio de datos y la minería de datos. 
-- Esto es realmente importante, pues facilita la comunicación del estado del arte del cumplimiento de plazos GES hacia unidades de negocios y dirección (no técnicas).
+- Además, el reporte incluye una serie de análisis y visualizaciones que facilitan el análisis exploratorio y la minería de datos. 
+- Esto es realmente importante, pues facilita la comunicación del estado del arte del cumplimiento de plazos GES hacia unidades de negocios y dirección (unidades no técnicas).
 - Facilita la focalización de acciones de mejora, pues se generan diversos indicadores de desempeño y evolución en el tiempo de éstos.
 
 ---
@@ -105,30 +105,6 @@ class: chapter-slide
 # El reporte...
 
 ---
-
-&lt;img src=&quot;images/excel.png&quot;; style=&quot;max-height:540px&quot;&gt;
-
----
-
-
-```r
-packages &lt;- c(
-  &quot;tidyverse&quot;,
-  &quot;janitor&quot;,
-  &quot;readxl&quot;,
-  &quot;plotly&quot;,
-  &quot;lubridate&quot;,
-  &quot;kableExtra&quot;,
-  &quot;treemap&quot;,
-  &quot;writexl&quot;,
-  &quot;data.table&quot;,
-  &quot;scales&quot;,
-  &quot;zoo&quot;
-)
-```
-
----
-
 .tiny[
 
 ```r
@@ -175,39 +151,6 @@ total_ges &lt;- rbind(ges_vigentes, ges_vencidas) |&gt;
   )
 ```
 ]
----
-
-
-```r
-total_ges &lt;- inner_join(total_ges, etapas) |&gt;
-  mutate(etapa = factor(etapa, levels = c(
-    &quot;Consulta&quot;,
-    &quot;Confirmación&quot;,
-    &quot;Etapificación&quot;,
-    &quot;Tratamiento&quot;,
-    &quot;Rehabilitación&quot;,
-    &quot;Seguimiento&quot;
-  )))
-```
-
----
-
-
-```r
-temp &lt;- list.files(
-  path = &quot;./data_clean/&quot;,
-  pattern = &quot;total_ges*&quot;,
-  full.names = TRUE
-) %&gt;%
-  map_df(~ read_excel(.)) %&gt;%
-  mutate(riesgo = factor(riesgo, levels = c(
-    &quot;Bajo&quot;,
-    &quot;Medio&quot;,
-    &quot;Alto&quot;,
-    &quot;Muy alto&quot;,
-    &quot;Vencido&quot;
-  )))
-```
 
 ---
 
@@ -230,22 +173,17 @@ temp &lt;- list.files(
 # Finalmente...
 
 - Reducción de tiempo para generar reportes.
-- Automatizar tareas manuales. 
+- Automatiza las tareas manuales. 
 - Reducción de errores.
-- Facilita el benchmarking.
-- Facilita EDA.
-- Agrega dimensiones al análisis (serie de tiempo).
+- Facilita le monitoreo y supervisión.
+- Facilita el EDA.
+- Agrega dimensiones al análisis (serie de tiempo, etapas, servicios clínicos).
 
 ---
 
 class: chapter-slide
 # Necesitamos una mejor salud pública y R es una gran ayuda para lograrlo 💪
 
----
-
-&lt;img src=&quot;images/github.png&quot;; style=&quot;max-height:480px&quot;&gt;
-
-https://github.com/paulovillarroel/reporte_GES 
 ---
 
 class: chapter-slide
